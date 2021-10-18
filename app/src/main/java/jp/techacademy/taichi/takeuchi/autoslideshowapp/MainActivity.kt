@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 requestPermissions(
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     PERMISSIONS_REQUEST_CODE
-                )//TODO 拒否されたら落ちない様にする
+                )
             }
             // Android 5系以下の場合
         } else {
@@ -119,6 +119,9 @@ class MainActivity : AppCompatActivity() {
             PERMISSIONS_REQUEST_CODE ->
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getContentsInfo()
+                }else{
+                //拒否されたら終了する
+                    finish()
                 }
         }
     }
@@ -143,7 +146,9 @@ class MainActivity : AppCompatActivity() {
 
    override fun onDestroy(){
         super.onDestroy()
-        mCursor!!.close()
+       if(mCursor!=null) {
+           mCursor!!.close()//TODO nullでない場合にクローズにする
+       }
    }
 }
 //   END   //
